@@ -1,0 +1,16 @@
+{
+  "name": "@esearch/shared",
+  "version": "1.0.0",
+  "author": "Guilherme Jorge do Vale",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "description": "Shared library for e-search",
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "uuid": "^11.1.0"
+  }
+}
