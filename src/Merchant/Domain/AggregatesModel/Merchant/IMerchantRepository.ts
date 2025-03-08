@@ -8,5 +8,9 @@ export interface IMerchantRepository extends IRepository<Merchant> {
 
   delete(merchant: Merchant): void;
 
-  getByGlobalIdAsync(guid: Guid): Promise<Merchant>;
+  getByGlobalIdAsync(guid: Guid): Promise<Merchant | undefined>;
+
+  getByExternalIdAsync(externalId: string): Promise<Merchant | undefined>;
+
+  listAsync(): Promise<Merchant[]>;
 }

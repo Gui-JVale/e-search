@@ -1,23 +1,45 @@
-// import { Injectable } from '@nestjs/common';
-// import { IMerchantRepository } from '../../domain/Repositories/IMerchantRepository';
-// import { Merchant } from '../../domain/aggregates-model/merchant/merchant';
-// import { MerchantContext } from '../MerchantContext';
+import { Injectable } from "@nestjs/common";
+import { Guid, IUnitOfWork } from "@esearch/shared";
+import { IMerchantRepository } from "../../Domain/AggregatesModel/Merchant/IMerchantRepository";
+import { Merchant } from "../../Domain/AggregatesModel/Merchant/Merchant";
+import { MerchantContext } from "../MerchantContext";
 
-// @Injectable()
-// export class MerchantRepository implements IMerchantRepository {
-//   constructor(private context: MerchantContext) {}
+@Injectable()
+export class MerchantRepository implements IMerchantRepository {
+  constructor(private _context: MerchantContext) {}
 
-//   get UnitOfWork(): IUnitOfWork {
-//     return this.context;
-//   }
+  get unitOfWork(): IUnitOfWork {
+    return this._context;
+  }
 
-//   async Create(merchant: Merchant): Promise<Merchant> {
-//     return this.context.Merchants.save(merchant);
-//   }
+  create(merchant: Merchant): Merchant {
+    this._context.add(merchant);
+    return merchant;
+  }
 
-//   async Update(merchant: Merchant): Promise<void> {
-//     await this.context.Merchants.save(merchant);
-//   }
+  update(merchant: Merchant): void {
+    this._context.update(merchant);
+  }
 
-//   // ... other repository methods
-// }
+  delete(merchant: Merchant): void {
+    this._context.delete(merchant);
+  }
+
+  getByGlobalIdAsync(guid: Guid): Promise<Merchant | undefined> {
+    return this._context.merchants
+      .findOne({ where: { guid: guid.toString() } })
+      .then((merchant) => merchant?.toDomain());
+  }
+
+  getByExternalIdAsync(externalId: string): Promise<Merchant | undefined> {
+    return this._context.merchants
+      .findOne({ where: { externalId } })
+      .then((merchant) => merchant?.toDomain());
+  }
+
+  listAsync(): Promise<Merchant[]> {
+    return this._context.merchants
+      .find()
+      .then((merchants) => merchants?.map((merchant) => merchant?.toDomain()));
+  }
+}

@@ -8,7 +8,7 @@ export interface IMerchantEntityConfig {
   guid?: Guid;
   externalId: string;
   domain: string;
-  platform: PlatformEnum;
+  platform: string;
   name: string;
 }
 
@@ -64,7 +64,7 @@ export class Merchant extends Entity implements IAggregateRoot {
     this._guid = config.guid ?? Guid.newGuid();
     this._externalId = config.externalId;
     this._domain = config.domain;
-    this._platform = config.platform;
+    this._platform = PlatformEnum.fromName(config.platform);
     this._name = config.name;
     this._billingStatus = BillingStatus.Inactive;
     this._servicesStatus = new ServicesStatus();
