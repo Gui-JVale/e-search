@@ -16,11 +16,13 @@ import { MerchantViewModel } from "./Models";
 import { CreateMerchantDto, UpdateMerchantDto } from "./Dtos";
 
 @Controller("merchants")
-export class MerchantController {
+export class MerchantControllers {
   constructor(
     private _merchantRepository: IMerchantRepository,
     private _logger: ILogger,
-  ) {}
+  ) {
+    this._logger.setContext("MerchantControllers");
+  }
 
   @Post()
   async create(@Body() createMerchantDto: CreateMerchantDto) {

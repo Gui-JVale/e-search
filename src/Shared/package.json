@@ -7,11 +7,15 @@
   "types": "dist/index.d.ts",
   "description": "Shared library for e-search",
   "scripts": {
-    "build": "tsc --build",
+    "build": "npm run clean && tsc --build",
     "clean": "rimraf dist"
   },
   "dependencies": {
     "typeorm": "^0.3.21",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "rimraf": "^6.0.1"
   }
 }

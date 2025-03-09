@@ -1,9 +1,26 @@
 import { NestFactory } from "@nestjs/core";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
-import { AppModule } from "./Modules/AppModule";
+import { Application } from "Application";
+import { Logger } from "@esearch/shared";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(Application);
+  app.useLogger(new Logger());
+
+  // // Connect to microservice transport
+  // app.connectMicroservice<MicroserviceOptions>({
+  //   transport: Transport.RMQ,
+  //   options: {
+  //     urls: [process.env.RABBITMQ_URL || "amqp://localhost:5672"],
+  //     queue: "merchant_queue",
+  //     queueOptions: {
+  //       durable: true,
+  //     },
+  //   },
+  // });
+
+  // // Start microservice
+  // await app.startAllMicroservices();
 
   const config = new DocumentBuilder()
     .setTitle("eSearch API")

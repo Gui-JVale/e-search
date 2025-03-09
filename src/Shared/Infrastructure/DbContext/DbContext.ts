@@ -1,6 +1,5 @@
-import { DataSource, EntityManager, QueryRunner } from "typeorm";
-import { IsolationLevel } from "typeorm/driver/types/IsolationLevel";
-import { Entity, IUnitOfWork } from "src/Shared/Domain";
+import { DataSource, EntityManager } from "typeorm";
+import { Entity, IUnitOfWork } from "../../Domain";
 
 import { ChangeTracker } from "./ChangeTracker";
 import { EntityState } from "./EntityState";
@@ -8,6 +7,10 @@ import { TrackedEntity } from "./EntityState";
 import { ILogger } from "../Services/ILogger";
 // import { EventDispatcher } from "./EventDispatcher";
 
+/**
+ * Base class for all database contexts
+ * @template T - The type of entity managed by the context
+ */
 export abstract class DbContext<T extends Entity> implements IUnitOfWork {
   protected readonly _dataSource: DataSource;
   // private readonly _eventDispatcher: EventDispatcher;
@@ -22,10 +25,18 @@ export abstract class DbContext<T extends Entity> implements IUnitOfWork {
     this._changeTracker = new ChangeTracker<T>();
   }
 
+  /**
+   * Save all entities in the change tracker
+   * @returns Promise<boolean>
+   */
   saveEntitiesAsync(): Promise<boolean> {
     return this.saveChangesAsync();
   }
 
+  /**
+   * Save all changes to the database
+   * @returns Promise<boolean>
+   */
   async saveChangesAsync(): Promise<boolean> {
     try {
       const manager = await this.getEntityManager();
@@ -51,20 +62,38 @@ export abstract class DbContext<T extends Entity> implements IUnitOfWork {
     }
   }
 
+  /**
+   * Add an entity to the change tracker
+   * @param entity - The entity to add
+   * @returns The entity
+   */
   add(entity: T): T {
     this._changeTracker.add(entity);
     return entity;
   }
 
+  /**
+   * Update an entity in the change tracker
+   * @param entity - The entity to update
+   * @returns The entity
+   */
   update(entity: T): T {
     this._changeTracker.entry(entity).state = EntityState.Modified;
     return entity;
   }
 
+  /**
+   * Delete an entity from the change tracker
+   * @param entity - The entity to delete
+   */
   delete(entity: T): void {
     this._changeTracker.remove(entity);
   }
 
+  /**
+   * Get the entity manager
+   * @returns The entity manager
+   */
   protected async getEntityManager(): Promise<EntityManager> {
     if (!this._entityManager) {
       if (!this._dataSource.isInitialized) {

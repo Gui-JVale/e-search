@@ -1,35 +1,43 @@
-export interface LogContext {
-  [key: string]: any;
-}
-
 export interface ILogger {
   /**
-   * Log debug level message
-   * @param message - Message to log
+   * Set the context for the logger
+   * @param context - The context to set
    */
-  debug(...message: string[]): void;
+  setContext(context: string): void;
 
   /**
    * Log info level message
    * @param message - Message to log
    */
-  info(...message: string[]): void;
+  log(message: string, ...meta: any[]): void;
+
+  /**
+   * Log info level message
+   * @param message - Message to log
+   */
+  info(message: string, ...meta: any[]): void;
 
   /**
    * Log warning level message
    * @param message - Message to log
    */
-  warn(...message: string[]): void;
+  warn(message: string, ...meta: any[]): void;
+
+  /**
+   * Log debug level message
+   * @param message - Message to log
+   */
+  debug(message: string, ...meta: any[]): void;
 
   /**
    * Log error level message
    * @param message - Message to log
    */
-  error(...message: string[]): void;
+  error(message: string, ...meta: any[]): void;
 
   /**
    * Log fatal level message
    * @param message - Message to log
    */
-  fatal(...message: string[]): void;
+  fatal(message: string, ...meta: any[]): void;
 }

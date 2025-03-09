@@ -1,13 +1,13 @@
 // src/Merchant/Infrastructure/Persistence/MerchantTypeORM.ts
 import { Entity, PrimaryColumn, Column } from "typeorm";
+import { Guid } from "@esearch/shared";
 import {
   Merchant,
   IMerchantEntityConfig,
-} from "../../Domain/AggregatesModel/Merchant/Merchant";
-import { Guid, PlatformEnum } from "@esearch/shared";
-import { BillingStatus } from "../../Domain/AggregatesModel/Merchant/BillingStatus";
-import { ServiceType } from "Domain/AggregatesModel/Merchant/ServiceType";
-import { ServiceStatus } from "Domain/AggregatesModel/Merchant/ServiceStatus";
+  BillingStatus,
+  ServiceType,
+  ServiceStatus,
+} from "Domain";
 
 @Entity("merchants")
 export class MerchantEntityTypeConfiguration {
@@ -53,7 +53,7 @@ export class MerchantEntityTypeConfiguration {
       guid: Guid.parse(this.guid),
       externalId: this.externalId,
       domain: this.domain,
-      platform: PlatformEnum.fromName(this.platform),
+      platform: this.platform,
       name: this.name,
     };
 
@@ -101,8 +101,8 @@ export class MerchantEntityTypeConfiguration {
   }
 
   // Static create method
-  static fromDomain(merchant: Merchant): MerchantEntityORM {
-    const orm = new MerchantEntityORM();
+  static fromDomain(merchant: Merchant): MerchantEntityTypeConfiguration {
+    const orm = new MerchantEntityTypeConfiguration();
     orm.guid = merchant.guid.toString();
     orm.externalId = merchant.externalId;
     orm.domain = merchant.domain;
