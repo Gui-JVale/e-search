@@ -4,13 +4,14 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Inject,
   Param,
   Post,
   Put,
 } from "@nestjs/common";
 import { Guid, ILogger } from "@esearch/shared";
 
-import { IMerchantRepository, Merchant } from "Domain";
+import { IMerchantRepository, Merchant } from "DomainTemp";
 
 import { MerchantViewModel } from "./Models";
 import { CreateMerchantDto, UpdateMerchantDto } from "./Dtos";
@@ -18,7 +19,9 @@ import { CreateMerchantDto, UpdateMerchantDto } from "./Dtos";
 @Controller("merchants")
 export class MerchantControllers {
   constructor(
+    @Inject(IMerchantRepository)
     private _merchantRepository: IMerchantRepository,
+    @Inject(ILogger)
     private _logger: ILogger,
   ) {
     this._logger.setContext("MerchantControllers");

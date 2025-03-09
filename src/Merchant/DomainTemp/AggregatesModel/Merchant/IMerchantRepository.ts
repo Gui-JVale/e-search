@@ -35,3 +35,6 @@ export interface IMerchantRepository extends IRepository<Merchant> {
    */
   listAsync(): Promise<Merchant[]>;
 }
+
+// Symbol for dependency injection
+export const IMerchantRepository = Symbol("IMerchantRepository");

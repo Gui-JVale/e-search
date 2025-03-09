@@ -7,7 +7,7 @@ import {
   BillingStatus,
   ServiceType,
   ServiceStatus,
-} from "Domain";
+} from "DomainTemp";
 
 @Entity("merchants")
 export class MerchantEntityTypeConfiguration {
@@ -41,10 +41,10 @@ export class MerchantEntityTypeConfiguration {
   @Column({ type: "varchar", length: 20 })
   platformServiceStatusName: string;
 
-  @Column({ type: "datetime" })
+  @Column({ type: "timestamp" })
   createdAt: Date;
 
-  @Column({ type: "datetime" })
+  @Column({ type: "timestamp" })
   updatedAt: Date;
 
   // Convert to domain entity

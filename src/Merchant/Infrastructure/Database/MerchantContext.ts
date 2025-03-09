@@ -1,14 +1,13 @@
-import { Injectable } from "@nestjs/common";
-import { InjectDataSource } from "@nestjs/typeorm";
+import { Inject, Injectable } from "@nestjs/common";
 import { DataSource } from "typeorm";
 
 import { DbContext, ILogger } from "@esearch/shared";
-import { Merchant } from "Domain/AggregatesModel/Merchant/Merchant";
+import { Merchant } from "DomainTemp/AggregatesModel/Merchant/Merchant";
 import { MerchantEntityTypeConfiguration } from "../EntityConfigurations/MerchantEntityTypeConfiguration";
 
 @Injectable()
 export class MerchantContext extends DbContext<Merchant> {
-  constructor(@InjectDataSource() dataSource: DataSource, logger: ILogger) {
+  constructor(dataSource: DataSource, @Inject(ILogger) logger: ILogger) {
     super(dataSource, logger);
   }
 

@@ -5,7 +5,9 @@ import { Logger } from "@esearch/shared";
 
 async function bootstrap() {
   const app = await NestFactory.create(Application);
-  app.useLogger(new Logger());
+  // const logger = new Logger();
+  // logger.setContext("Merchant Microservice");
+  // app.useLogger(logger);
 
   // // Connect to microservice transport
   // app.connectMicroservice<MicroserviceOptions>({

@@ -1,4 +1,4 @@
-import { Merchant } from "Domain";
+import { Merchant } from "DomainTemp";
 
 export class MerchantViewModel {
   id: string;

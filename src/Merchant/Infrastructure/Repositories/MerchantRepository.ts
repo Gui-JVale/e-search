@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Guid, IUnitOfWork } from "@esearch/shared";
-import { IMerchantRepository } from "../../Domain/AggregatesModel/Merchant/IMerchantRepository";
-import { Merchant } from "../../Domain/AggregatesModel/Merchant/Merchant";
+import { IMerchantRepository } from "../../DomainTemp/AggregatesModel/Merchant/IMerchantRepository";
+import { Merchant } from "../../DomainTemp/AggregatesModel/Merchant/Merchant";
 import { MerchantContext } from "../Database/MerchantContext";
 
 @Injectable()
