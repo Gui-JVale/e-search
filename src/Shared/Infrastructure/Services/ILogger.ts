@@ -41,3 +41,5 @@ export interface ILogger {
    */
   fatal(message: string, ...meta: any[]): void;
 }
+
+export const ILogger = Symbol("ILogger");

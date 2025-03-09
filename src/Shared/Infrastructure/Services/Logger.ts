@@ -1,5 +1,10 @@
 import { Injectable, Scope } from "@nestjs/common";
-import { format, transports, Logger as WinstonLogger } from "winston";
+import {
+  createLogger,
+  format,
+  transports,
+  Logger as WinstonLogger,
+} from "winston";
 
 import { ILogger } from "./ILogger";
 
@@ -9,8 +14,10 @@ export class Logger implements ILogger {
   private readonly _logger: WinstonLogger;
 
   constructor() {
+    //@ts-ignore
+    this.setup = true;
     this._context = "";
-    this._logger = new WinstonLogger({
+    this._logger = createLogger({
       format: format.combine(
         format.timestamp({
           format: "YYYY-MM-DD HH:mm:ss",
@@ -23,6 +30,7 @@ export class Logger implements ILogger {
         }),
       ],
     });
+    console.log("Logger constructor");
   }
 
   setContext(context: string): void {
@@ -34,6 +42,8 @@ export class Logger implements ILogger {
   }
 
   info(message: string, ...meta: any[]): void {
+    //@ts-ignore
+    console.log("logger setup", this.setup);
     this._logger.info(this._context, message, ...meta);
   }
 
