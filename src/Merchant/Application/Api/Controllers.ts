@@ -9,12 +9,22 @@ import {
   Post,
   Put,
 } from "@nestjs/common";
+import {
+  ApiCreatedResponse,
+  ApiBadRequestResponse,
+  ApiOkResponse,
+} from "@nestjs/swagger";
 import { Guid, ILogger } from "@esearch/shared";
 
 import { IMerchantRepository, Merchant } from "DomainTemp";
 
+import {
+  CreateMerchantDto,
+  UpdateMerchantDto,
+  GetMerchantDto,
+  GetMerchantsDto,
+} from "./Dtos";
 import { MerchantViewModel } from "./Models";
-import { CreateMerchantDto, UpdateMerchantDto } from "./Dtos";
 
 @Controller("merchants")
 export class MerchantControllers {
@@ -28,6 +38,8 @@ export class MerchantControllers {
   }
 
   @Post()
+  @ApiCreatedResponse()
+  @ApiBadRequestResponse()
   async create(@Body() createMerchantDto: CreateMerchantDto) {
     this._logger.info("Create merchant request received");
 
@@ -61,6 +73,8 @@ export class MerchantControllers {
   }
 
   @Put(":id")
+  @ApiOkResponse()
+  @ApiBadRequestResponse()
   async update(
     @Param("id") id: string,
     @Body() updateMerchantDto: UpdateMerchantDto,
@@ -93,7 +107,8 @@ export class MerchantControllers {
   }
 
   @Get()
-  async list(): Promise<{ merchants: MerchantViewModel[] }> {
+  @ApiOkResponse({ type: GetMerchantsDto })
+  async list(): Promise<GetMerchantsDto> {
     const merchants = await this._merchantRepository.listAsync();
     return {
       merchants: merchants.map((merchant) => new MerchantViewModel(merchant)),
@@ -101,7 +116,10 @@ export class MerchantControllers {
   }
 
   @Get(":id")
-  async findOne(@Param("id") id: string) {
+  @ApiOkResponse({ type: GetMerchantDto })
+  async findOne(
+    @Param("id") id: string,
+  ): Promise<{ merchant: MerchantViewModel }> {
     const guid = Guid.parse(id);
     const merchant = await this._merchantRepository.getByGlobalIdAsync(guid);
     if (!merchant) {

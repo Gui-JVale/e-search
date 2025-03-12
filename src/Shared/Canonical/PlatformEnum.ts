@@ -1,7 +1,7 @@
 import { Enumeration } from "../Domain/Enumeration";
 
 export class PlatformEnum extends Enumeration {
-  public static readonly SHOPIFY = new PlatformEnum(1, "shopify");
+  public static readonly Shopify = new PlatformEnum(1, "shopify");
 
   private constructor(value: number, name: string) {
     super(value, name);
@@ -10,7 +10,7 @@ export class PlatformEnum extends Enumeration {
   public static fromName(name: string): PlatformEnum {
     switch (name) {
       case "shopify":
-        return PlatformEnum.SHOPIFY;
+        return PlatformEnum.Shopify;
       default:
         throw new Error(`Invalid platform: ${name}`);
     }
