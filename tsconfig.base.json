@@ -13,6 +13,8 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "paths": {
       "@esearch/shared": ["src/Shared"]
     }

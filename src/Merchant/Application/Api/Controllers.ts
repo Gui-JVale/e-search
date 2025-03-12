@@ -13,6 +13,7 @@ import {
   ApiCreatedResponse,
   ApiBadRequestResponse,
   ApiOkResponse,
+  ApiTags,
 } from "@nestjs/swagger";
 import { Guid, ILogger } from "@esearch/shared";
 
@@ -26,6 +27,7 @@ import {
 } from "./Dtos";
 import { MerchantViewModel } from "./Models";
 
+@ApiTags("Merchants")
 @Controller("merchants")
 export class MerchantControllers {
   constructor(
