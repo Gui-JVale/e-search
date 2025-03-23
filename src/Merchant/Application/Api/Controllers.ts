@@ -8,14 +8,16 @@ import {
   Param,
   Post,
   Put,
+  UseInterceptors,
 } from "@nestjs/common";
+
 import {
   ApiCreatedResponse,
   ApiBadRequestResponse,
   ApiOkResponse,
   ApiTags,
 } from "@nestjs/swagger";
-import { Guid, ILogger } from "@esearch/shared";
+import { Guid, ILogger, TracingInterceptor } from "@esearch/shared";
 
 import { IMerchantRepository, Merchant } from "DomainTemp";
 
@@ -29,6 +31,7 @@ import { MerchantViewModel } from "./Models";
 
 @ApiTags("Merchants")
 @Controller("merchants")
+@UseInterceptors(TracingInterceptor)
 export class MerchantControllers {
   constructor(
     @Inject(IMerchantRepository)

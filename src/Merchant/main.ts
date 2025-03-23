@@ -1,10 +1,14 @@
 import { NestFactory } from "@nestjs/core";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { Application } from "Application";
-import { Logger } from "@esearch/shared";
+import { Logger, ObservabilityModule } from "@esearch/shared";
+import dotenv from "dotenv";
+dotenv.config();
 
 async function bootstrap() {
+  ObservabilityModule.initializeSdk();
   const app = await NestFactory.create(Application);
+
   // const logger = new Logger();
   // logger.setContext("Merchant Microservice");
   // app.useLogger(logger);

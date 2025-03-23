@@ -3,10 +3,12 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ApiModule } from "./Api";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { MerchantEntityTypeConfiguration } from "Infrastructure";
+import { ObservabilityModule } from "@esearch/shared";
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env.local" }),
+    ObservabilityModule.forRoot(),
     TypeOrmModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
         type: "postgres",
