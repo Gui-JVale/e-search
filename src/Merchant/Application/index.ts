@@ -1,9 +1,9 @@
-import { Module } from "@nestjs/common";
+import { Module, NestModule, MiddlewareConsumer } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ApiModule } from "./Api";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { MerchantEntityTypeConfiguration } from "Infrastructure";
-import { ObservabilityModule } from "@esearch/shared";
+import { HttpMetricsMiddleware, ObservabilityModule } from "@esearch/shared";
 
 @Module({
   imports: [
@@ -26,4 +26,8 @@ import { ObservabilityModule } from "@esearch/shared";
     ApiModule,
   ],
 })
-export class Application {}
+export class Application implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(HttpMetricsMiddleware).forRoutes("*");
+  }
+}
