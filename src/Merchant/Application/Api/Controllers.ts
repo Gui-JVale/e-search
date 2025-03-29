@@ -125,6 +125,10 @@ export class MerchantControllers {
   async findOne(
     @Param("id") id: string,
   ): Promise<{ merchant: MerchantViewModel }> {
+    if (!Guid.isValid(id)) {
+      throw new HttpException("Invalid merchant ID", HttpStatus.BAD_REQUEST);
+    }
+
     const guid = Guid.parse(id);
     const merchant = await this._merchantRepository.getByGlobalIdAsync(guid);
     if (!merchant) {
