@@ -26,6 +26,18 @@ export abstract class DbContext<T extends Entity> implements IUnitOfWork {
   }
 
   /**
+   * Convert the entity to a domain object
+   * @returns The domain object
+   */ 
+  public abstract toDomain(record: object): Entity;
+
+  /**
+   * Convert the entity to a persistence object
+   * @returns The persistence object
+   */
+  public abstract toPersistence(entity: Entity): object;
+  
+  /**
    * Save all entities in the change tracker
    * @returns Promise<boolean>
    */
@@ -39,7 +51,7 @@ export abstract class DbContext<T extends Entity> implements IUnitOfWork {
    */
   async saveChangesAsync(): Promise<boolean> {
     try {
-      const manager = await this.getEntityManager();
+      const manager = await this.getEntityManagerAsync();
 
       await manager.transaction(async (transactionalManager) => {
         const trackedEntities = this._changeTracker.getTrackedEntities();
@@ -94,7 +106,7 @@ export abstract class DbContext<T extends Entity> implements IUnitOfWork {
    * Get the entity manager
    * @returns The entity manager
    */
-  protected async getEntityManager(): Promise<EntityManager> {
+  protected async getEntityManagerAsync(): Promise<EntityManager> {
     if (!this._entityManager) {
       if (!this._dataSource.isInitialized) {
         await this._dataSource.initialize();
@@ -105,38 +117,38 @@ export abstract class DbContext<T extends Entity> implements IUnitOfWork {
   }
 
   private async _saveDeletedEntities(
-    trackedEntities: TrackedEntity<any>[],
+    trackedEntities: TrackedEntity<T>[],
     manager: EntityManager,
   ): Promise<void> {
     const deletedEntities = trackedEntities.filter(
       (e) => e.state === EntityState.Deleted,
     );
     for (const { entity } of deletedEntities) {
-      await manager.remove(entity);
+      await manager.remove(this.toPersistence(entity));
     }
   }
 
   private async _saveModifiedEntities(
-    trackedEntities: TrackedEntity<any>[],
+    trackedEntities: TrackedEntity<T>[],
     manager: EntityManager,
   ): Promise<void> {
     const modifiedEntities = trackedEntities.filter(
       (e) => e.state === EntityState.Modified,
     );
     for (const { entity } of modifiedEntities) {
-      await manager.save(entity);
+      await manager.save(this.toPersistence(entity));
     }
   }
 
   private async _saveNewEntities(
-    trackedEntities: TrackedEntity<any>[],
+    trackedEntities: TrackedEntity<T>[],
     manager: EntityManager,
   ): Promise<void> {
     const newEntities = trackedEntities.filter(
       (e) => e.state === EntityState.Added,
     );
     for (const { entity } of newEntities) {
-      await manager.save(entity);
+      await manager.save(this.toPersistence(entity));
     }
   }
 

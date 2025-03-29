@@ -1,7 +1,7 @@
 import { INotification } from "../Common/INotification";
 
 export abstract class Entity {
-  private _id?: string;
+  protected _id: string;
   private _domainEvents: INotification[] = [];
 
   get id(): string | undefined {

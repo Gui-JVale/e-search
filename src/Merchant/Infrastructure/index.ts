@@ -1,2 +1,2 @@
 export * from "./Repositories";
-export * from "./EntityConfigurations";
+export * from "./Records";

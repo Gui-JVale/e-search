@@ -62,6 +62,7 @@ export class Merchant extends Entity implements IAggregateRoot {
   constructor(config: IMerchantEntityConfig) {
     super();
     this._guid = config.guid ?? Guid.newGuid();
+    this._id = this._guid.toString();
     this._externalId = config.externalId;
     this._domain = config.domain;
     this._platform = PlatformEnum.fromName(config.platform);

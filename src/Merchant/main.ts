@@ -1,4 +1,5 @@
 import { NestFactory } from "@nestjs/core";
+import { ValidationPipe } from "@nestjs/common";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { Application } from "Application";
 import { Logger, ObservabilityModule } from "@esearch/shared";
@@ -8,6 +9,8 @@ dotenv.config();
 async function bootstrap() {
   ObservabilityModule.initializeSdk();
   const app = await NestFactory.create(Application);
+
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   // const logger = new Logger();
   // logger.setContext("Merchant Microservice");

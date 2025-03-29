@@ -2,7 +2,7 @@ import { Module, NestModule, MiddlewareConsumer } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ApiModule } from "./Api";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { MerchantEntityTypeConfiguration } from "Infrastructure";
+import { MerchantRecord } from "Infrastructure";
 import { HttpMetricsMiddleware, ObservabilityModule } from "@esearch/shared";
 
 @Module({
@@ -17,8 +17,8 @@ import { HttpMetricsMiddleware, ObservabilityModule } from "@esearch/shared";
         username: configService.get("DATABASE_USERNAME"),
         password: configService.get("DATABASE_PASSWORD"),
         database: configService.get("DATABASE_NAME"),
-        entities: [MerchantEntityTypeConfiguration],
-        synchronize: configService.get("NODE_ENV") !== "production",
+        entities: [MerchantRecord],
+        // synchronize: configService.get("NODE_ENV") !== "production",
         logging: configService.get("NODE_ENV") !== "production",
       }),
       inject: [ConfigService],

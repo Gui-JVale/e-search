@@ -10,7 +10,7 @@ import {
 } from "DomainTemp";
 
 @Entity("merchants")
-export class MerchantEntityTypeConfiguration {
+export class MerchantRecord {
   @PrimaryColumn({ type: "uuid" })
   guid: string;
 
@@ -101,8 +101,8 @@ export class MerchantEntityTypeConfiguration {
   }
 
   // Static create method
-  static fromDomain(merchant: Merchant): MerchantEntityTypeConfiguration {
-    const orm = new MerchantEntityTypeConfiguration();
+  static fromDomain(merchant: Merchant): MerchantRecord {
+    const orm = new MerchantRecord();
     orm.guid = merchant.guid.toString();
     orm.externalId = merchant.externalId;
     orm.domain = merchant.domain;

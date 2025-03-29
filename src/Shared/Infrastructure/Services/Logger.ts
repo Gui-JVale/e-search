@@ -30,7 +30,6 @@ export class Logger implements ILogger {
         }),
       ],
     });
-    console.log("Logger constructor");
   }
 
   setContext(context: string): void {
@@ -43,7 +42,6 @@ export class Logger implements ILogger {
 
   info(message: string, ...meta: any[]): void {
     //@ts-ignore
-    console.log("logger setup", this.setup);
     this._logger.info(this._context, message, ...meta);
   }
 

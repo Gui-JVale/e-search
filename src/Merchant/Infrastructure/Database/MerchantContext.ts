@@ -3,7 +3,8 @@ import { DataSource } from "typeorm";
 
 import { DbContext, ILogger } from "@esearch/shared";
 import { Merchant } from "DomainTemp/AggregatesModel/Merchant/Merchant";
-import { MerchantEntityTypeConfiguration } from "../EntityConfigurations/MerchantEntityTypeConfiguration";
+import { MerchantRecord } from "../Records/MerchantRecord";
+
 
 @Injectable()
 export class MerchantContext extends DbContext<Merchant> {
@@ -11,7 +12,15 @@ export class MerchantContext extends DbContext<Merchant> {
     super(dataSource, logger);
   }
 
-  public merchants = this._dataSource.getRepository(
-    MerchantEntityTypeConfiguration,
-  );
+  // TODO: implement wrapper, it's dangerous to expose the repository directly, clients
+  // can bypass the domain layer and modify the database directly.
+  public merchants = this._dataSource.getRepository(MerchantRecord);
+
+  public toDomain(record: MerchantRecord): Merchant {
+    return record.toDomain();
+  }
+
+  public toPersistence(entity: Merchant): MerchantRecord {
+    return MerchantRecord.fromDomain(entity);
+  }
 }
